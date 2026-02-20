@@ -27,46 +27,54 @@
     combos {
         compatible = "zmk,combos";
 
+        // Totem pos 6 7 8  →  Corne pos 7 8 9  (row 0, cols 1-3 of right side)
         Meh1 {
             bindings = <&kp LS(LA(LC(NUMBER_1)))>;
-            key-positions = <6 7 8>;
+            key-positions = <7 8 9>;
         };
 
+        // Totem pos 16 17 18  →  Corne pos 19 20 21
         Meh2 {
             bindings = <&kp LS(LA(LC(NUMBER_2)))>;
-            key-positions = <16 17 18>;
+            key-positions = <19 20 21>;
         };
 
+        // Totem pos 28 29  →  Corne pos 32 33
         Enter {
             bindings = <&kp ENTER>;
-            key-positions = <28 29>;
+            key-positions = <32 33>;
             timeout-ms = <30>;
         };
 
+        // Totem pos 32 37  →  Corne pos 36 41
         SysLayer {
             bindings = <&mo SYS>;
-            key-positions = <32 37>;
+            key-positions = <36 41>;
         };
 
+        // Totem pos 23 24  →  Corne pos 27 28
         Tab {
             bindings = <&kp TAB>;
-            key-positions = <23 24>;
+            key-positions = <27 28>;
             timeout-ms = <30>;
         };
 
+        // Totem pos 36 7 6  →  Corne pos 40 8 7
         Hyper1 {
             bindings = <&kp LS(LA(LC(LG(NUMBER_1))))>;
-            key-positions = <36 7 6>;
+            key-positions = <40 8 7>;
         };
 
+        // Totem pos 36 16 17  →  Corne pos 40 19 20
         Hyper2 {
             bindings = <&kp LS(LA(LC(LG(NUMBER_2))))>;
-            key-positions = <36 16 17>;
+            key-positions = <40 19 20>;
         };
 
+        // Totem pos 36 28 27  →  Corne pos 40 32 31
         Hyper3 {
             bindings = <&kp LS(LA(LC(LG(NUMBER_3))))>;
-            key-positions = <36 28 27>;
+            key-positions = <40 32 31>;
         };
     };
 
@@ -128,74 +136,78 @@
     keymap {
         compatible = "zmk,keymap";
 
-        // -----------------------------------------------------------------------------------------
-        // BASE layer
-        // -----------------------------------------------------------------------------------------
-        // |  lt3 TAB  |  W  |  E  |  R  |  T  |   |  Y  |  U  |  I  |  O  |  lt3 P  |
-        // | mt Meh A  | mtAlt S | D | F  |  G  |   |  H  |  J  |  K  | mtAlt L | mt Meh '|
-        // |    ---    | mtCtrl Z | mtSft X | C | V | B  |   |  N  |  M  |  ,  |  .  | mtCtrl Q |  ---  |
-        //                        | --- | mt_hold SFT ESC | mt GUI SPC |   | lt2 ENTER | lt1 BSPC | --- |
+        // ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+        // Corne 42-key layout — outer cols (leftmost & rightmost) are always &trans (unused)
+        // | --- | lt3 TAB | W | E | R | T |   | Y | U | I | O | lt3 P | --- |
+        // | --- | mt Meh A | mt Alt S | D | F | G |   | H | J | K | mt Alt L | mt Meh ' | --- |
+        // | --- | mt Ctrl Z | mt Sft X | C | V | B |   | N | M | , | . | mt Ctrl Q | --- |
+        //               | --- | mt_hold SFT ESC | mt GUI SPC |   | lt NAV ENT | lt SYM BSPC | --- |
+        // ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 
         base_layer {
             label = "BASE";
             bindings = <
-        &lt FUN TAB                   &kp W             &kp E   &kp R                       &kp T                 &kp Y        &kp U            &kp I      &kp O           &lt FUN P
-        &mt LS(LA(LEFT_CONTROL)) A    &mt LEFT_ALT S    &kp D   &kp F                       &kp G                 &kp H        &kp J            &kp K      &mt LEFT_ALT L  &mt LS(LA(LEFT_CONTROL)) SINGLE_QUOTE
-&trans  &mt LEFT_CONTROL Z            &mt LEFT_SHIFT X  &kp C   &kp V                       &kp B                 &kp N        &kp M            &kp COMMA  &kp DOT         &mt LEFT_CONTROL Q                     &trans
-                                                        &trans  &mt_hold LEFT_SHIFT ESCAPE  &mt LEFT_GUI SPACE    &lt NAV ENTER  &lt SYM BACKSPACE  &trans
+&trans  &lt FUN TAB                  &kp W             &kp E   &kp R                       &kp T                  &kp Y         &kp U            &kp I      &kp O    &lt FUN P                              &trans
+&trans  &mt LS(LA(LEFT_CONTROL)) A   &mt LEFT_ALT S    &kp D   &kp F                       &kp G                  &kp H         &kp J            &kp K      &mt LEFT_ALT L  &mt LS(LA(LEFT_CONTROL)) SINGLE_QUOTE  &trans
+&trans  &mt LEFT_CONTROL Z           &mt LEFT_SHIFT X  &kp C   &kp V                       &kp B                  &kp N         &kp M            &kp COMMA  &kp DOT  &mt LEFT_CONTROL Q                     &trans
+                                                        &trans  &mt_hold LEFT_SHIFT ESCAPE  &mt LEFT_GUI SPACE     &lt NAV ENTER  &lt SYM BACKSPACE  &trans
             >;
         };
 
-        // -----------------------------------------------------------------------------------------
-        // SYM layer (Layer 1)
-        // -----------------------------------------------------------------------------------------
+        // | --- | @ | < | > | \ | | |   | ` | ( | ) | ~ | BSPC | --- |
+        // | --- | ! | _ | - | = | & |   | # | { | } | / | ? | --- |
+        // | --- | * | + | [ | ] | % |   | ^ | : | ; | $ | ¥ | --- |
+        //               | --- | mt SFT BSPC | --- |   | mo SYS | KP0 | --- |
 
         sym_layer {
             label = "SYM";
             bindings = <
-        &kp AT           &kp LESS_THAN  &kp GREATER_THAN  &kp BACKSLASH             &kp PIPE       &kp GRAVE  &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS  &kp TILDE   &kp BACKSPACE
-        &kp EXCLAMATION  &kp UNDER      &kp MINUS         &kp EQUAL                 &kp AMPS       &kp HASH   &kp LEFT_BRACE        &kp RIGHT_BRACE        &kp SLASH   &kp QUESTION
+&trans  &kp AT           &kp LESS_THAN  &kp GREATER_THAN  &kp BACKSLASH             &kp PIPE       &kp GRAVE  &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS  &kp TILDE   &kp BACKSPACE  &trans
+&trans  &kp EXCLAMATION  &kp UNDER      &kp MINUS         &kp EQUAL                 &kp AMPS       &kp HASH   &kp LEFT_BRACE        &kp RIGHT_BRACE        &kp SLASH   &kp QUESTION   &trans
 &trans  &kp STAR         &kp PLUS       &kp LEFT_BRACKET  &kp RIGHT_BRACKET         &kp PERCENT    &kp CARET  &kp COLON             &kp SEMI               &kp DOLLAR  &kp INT_YEN    &trans
                                         &trans            &mt LEFT_SHIFT BACKSPACE  &trans         &mo SYS    &kp KP_N0             &trans
             >;
         };
 
-        // -----------------------------------------------------------------------------------------
-        // NAV layer (Layer 2)
-        // -----------------------------------------------------------------------------------------
+        // | --- | 1 | 2 | 3 | 4 | 5 |   | 6 | 7 | 8 | 9 | 0 | --- |
+        // | --- | - | mt Alt HOME | mt Sft PgDn | PgUp | END |   | ← | ↓ | ↑ | → | BSPC | --- |
+        // | --- | Ctrl | --- | --- | --- | --- |   | ScrL | ScrD | ScrU | ScrR | - | --- |
+        //               | --- | mt SFT BSPC | mt GUI SPC |   | --- | --- | --- |
 
         nav_layer {
             label = "NAV";
             bindings = <
-        &kp NUMBER_1      &kp NUMBER_2       &kp NUMBER_3              &kp NUMBER_4              &kp NUMBER_5          &kp NUMBER_6    &kp NUMBER_7    &kp NUMBER_8  &kp NUMBER_9     &kp NUMBER_0
-        &trans            &mt LEFT_ALT HOME  &mt LEFT_SHIFT PAGE_DOWN  &kp PAGE_UP               &kp END               &kp LEFT_ARROW  &kp DOWN_ARROW  &kp UP_ARROW  &kp RIGHT_ARROW  &kp BACKSPACE
-&trans  &kp LEFT_CONTROL  &trans             &trans                    &trans                    &trans                &msc SCRL_LEFT  &msc SCRL_DOWN  &msc SCRL_UP  &msc SCRL_RIGHT  &kp MINUS      &trans
+&trans  &kp NUMBER_1      &kp NUMBER_2       &kp NUMBER_3              &kp NUMBER_4              &kp NUMBER_5          &kp NUMBER_6    &kp NUMBER_7    &kp NUMBER_8  &kp NUMBER_9     &kp NUMBER_0     &trans
+&trans  &trans            &mt LEFT_ALT HOME  &mt LEFT_SHIFT PAGE_DOWN  &kp PAGE_UP               &kp END               &kp LEFT_ARROW  &kp DOWN_ARROW  &kp UP_ARROW  &kp RIGHT_ARROW  &kp BACKSPACE    &trans
+&trans  &kp LEFT_CONTROL  &trans             &trans                    &trans                    &trans                &msc SCRL_LEFT  &msc SCRL_DOWN  &msc SCRL_UP  &msc SCRL_RIGHT  &kp MINUS        &trans
                                              &trans                    &mt LEFT_SHIFT BACKSPACE  &mt LEFT_GUI SPACE    &trans          &trans          &trans
             >;
         };
 
-        // -----------------------------------------------------------------------------------------
-        // FUN layer (Layer 3)
-        // -----------------------------------------------------------------------------------------
+        // | --- | LockScr | CloseWin | mouse↑ | Screenshot | ReviveWin |   | --- | --- | --- | --- | Play/Pause | --- |
+        // | --- | --- | mouse← | mouse↓ | mouse→ | QuitApp |   | --- | Prev | Next | --- | --- | --- |
+        // | --- | --- | --- | --- | --- | --- |   | --- | Vol- | Vol+ | --- | --- | --- |
+        //               | MClick | LClick | RClick |   | --- | --- | --- |
 
         fun_layer {
             bindings = <
-        &LockScreen  &CloseWindow    &mmv MOVE_UP    &ScreenShoot     &ReviveWindow    &trans  &trans             &trans           &trans  &kp K_PLAY_PAUSE
-        &trans       &mmv MOVE_LEFT  &mmv MOVE_DOWN  &mmv MOVE_RIGHT  &QuitApp         &trans  &kp K_PREVIOUS     &kp K_NEXT       &trans  &trans
+&trans  &LockScreen  &CloseWindow    &mmv MOVE_UP    &ScreenShoot     &ReviveWindow    &trans  &trans             &trans           &trans  &kp K_PLAY_PAUSE  &trans
+&trans  &trans       &mmv MOVE_LEFT  &mmv MOVE_DOWN  &mmv MOVE_RIGHT  &QuitApp         &trans  &kp K_PREVIOUS     &kp K_NEXT       &trans  &trans            &trans
 &trans  &trans       &trans          &trans          &trans           &trans           &trans  &kp K_VOLUME_DOWN  &kp K_VOLUME_UP  &trans  &trans            &trans
                                      &mkp MCLK       &mkp LCLK        &mkp RCLK        &trans  &trans             &trans
             >;
         };
 
-        // -----------------------------------------------------------------------------------------
-        // SYS layer (Layer 4)
-        // -----------------------------------------------------------------------------------------
+        // | --- | --- | --- | BT clr all | BT clr | reset |   | reset | BT clr | BT clr all | BT0 | BT1 | --- |
+        // | --- | --- | --- | --- | bootload | OUT USB |   | OUT USB | bootload | --- | BT2 | BT3 | --- |
+        // | --- | --- | --- | --- | --- | OUT BLE |   | OUT BLE | --- | --- | --- | --- | --- |
+        //               | --- | --- | --- |   | --- | --- | --- |
 
         sys_layer {
             label = "SYS";
             bindings = <
-        &trans  &trans  &bt BT_CLR_ALL  &bt BT_CLR   &sys_reset      &sys_reset    &bt BT_CLR   &bt BT_CLR_ALL  &bt BT_SEL 0  &bt BT_SEL 1
-        &trans  &trans  &trans          &bootloader  &out OUT_USB    &out OUT_USB  &bootloader  &trans          &bt BT_SEL 2  &bt BT_SEL 3
+&trans  &trans  &trans  &bt BT_CLR_ALL  &bt BT_CLR   &sys_reset      &sys_reset    &bt BT_CLR   &bt BT_CLR_ALL  &bt BT_SEL 0  &bt BT_SEL 1  &trans
+&trans  &trans  &trans  &trans          &bootloader  &out OUT_USB    &out OUT_USB  &bootloader  &trans          &bt BT_SEL 2  &bt BT_SEL 3  &trans
 &trans  &trans  &trans  &trans          &trans       &out OUT_BLE    &out OUT_BLE  &trans       &trans          &trans        &trans        &trans
                         &trans          &trans       &trans          &trans        &trans       &trans
             >;
