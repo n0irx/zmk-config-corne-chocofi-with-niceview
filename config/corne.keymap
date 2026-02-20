@@ -8,52 +8,120 @@
 #include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/outputs.h>
+#include <dt-bindings/zmk/pointing.h>
 
 #define BASE 0
-#define NAV  1
-#define SYM  2
-#define ADJ  3
-#define TVP1 4
-#define TVP2 5
+#define SYM  1
+#define NAV  2
+#define FUN  3
+#define SYS  4
 
 &mt {
     quick-tap-ms = <100>;
     global-quick-tap;
     flavor = "tap-preferred";
-    tapping-term-ms = <170>;
+    tapping-term-ms = <180>;
 };
 
 / {
     combos {
         compatible = "zmk,combos";
 
-        combo_esc {
-            timeout-ms = <50>;
-            key-positions = <1 2>;
-            bindings = <&kp ESC>;
+        Meh1 {
+            bindings = <&kp LS(LA(LC(NUMBER_1)))>;
+            key-positions = <6 7 8>;
         };
 
-        combo_tvp {
-            timeout-ms = <100>;
-            key-positions = <13 14 15>;
-            bindings = <&tog TVP1>;
+        Meh2 {
+            bindings = <&kp LS(LA(LC(NUMBER_2)))>;
+            key-positions = <16 17 18>;
+        };
+
+        Enter {
+            bindings = <&kp ENTER>;
+            key-positions = <28 29>;
+            timeout-ms = <30>;
+        };
+
+        SysLayer {
+            bindings = <&mo SYS>;
+            key-positions = <32 37>;
+        };
+
+        Tab {
+            bindings = <&kp TAB>;
+            key-positions = <23 24>;
+            timeout-ms = <30>;
+        };
+
+        Hyper1 {
+            bindings = <&kp LS(LA(LC(LG(NUMBER_1))))>;
+            key-positions = <36 7 6>;
+        };
+
+        Hyper2 {
+            bindings = <&kp LS(LA(LC(LG(NUMBER_2))))>;
+            key-positions = <36 16 17>;
+        };
+
+        Hyper3 {
+            bindings = <&kp LS(LA(LC(LG(NUMBER_3))))>;
+            key-positions = <36 28 27>;
         };
     };
 
     macros {
-        gif: gif {
-            label = "giphy";
+        LockScreen: LockScreen {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings =
-                <&macro_press>,
-                <&kp LSHFT>,
-                <&macro_tap>,
-                <&kp N2>,
-                <&macro_release>,
-                <&kp LSHFT>,
-                <&macro_tap>,
-                <&kp G &kp I &kp F>;
+            bindings = <&kp LG(LC(Q))>;
+            label = "LOCKSCREEN";
+        };
+
+        CloseWindow: CloseWindow {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LG(LS(W))>;
+            label = "CLOSEWINDOW";
+        };
+
+        ScreenShoot: ScreenShoot {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LG(LS(NUMBER_4))>;
+            label = "SCREENSHOOT";
+        };
+
+        ReviveWindow: ReviveWindow {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LG(LS(T))>;
+            label = "REVIVEWINDOW";
+        };
+
+        Meh: Meh {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LS(LA(LEFT_CONTROL))>;
+            label = "MEH";
+        };
+
+        QuitApp: QuitApp {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LG(Q)>;
+            label = "QUITAPP";
+        };
+    };
+
+    behaviors {
+        mt_hold: mt_hold {
+            compatible = "zmk,behavior-hold-tap";
+            label = "MT_HOLD";
+            bindings = <&kp>, <&kp>;
+
+            #binding-cells = <2>;
+            tapping-term-ms = <200>;
         };
     };
 
@@ -61,93 +129,75 @@
         compatible = "zmk,keymap";
 
         // -----------------------------------------------------------------------------------------
-        // BASE layer - Totem layout adapted to Corne (42 keys)
-        // Outer left col:  TAB  / LCTRL / LALT(TAB)
-        // Outer right col: BSPC / SQT   / ENTER
+        // BASE layer
         // -----------------------------------------------------------------------------------------
-        //
-        // | LALT(TAB) |  Q  |  W  |  E  |  R  |  T  |   |  Y  |  U  |  I  |  O  |  P  | BSPC |
-        // |  LCTRL    |  A  |  S  |  D  |  F  |  G  |   |  H  |  J  |  K  |  L  |  '  | SEMI |
-        // |  TAB      | Z/C |  X  |  C  |  V  |  B  |   |  N  |  M  |  ,  |  .  |  /  | ENT  |
-        //                   | GUI | SHF | SPC(hyper) |   | ESC(SYM) | BSPC(NAV) | --- |
+        // |  lt3 TAB  |  W  |  E  |  R  |  T  |   |  Y  |  U  |  I  |  O  |  lt3 P  |
+        // | mt Meh A  | mtAlt S | D | F  |  G  |   |  H  |  J  |  K  | mtAlt L | mt Meh '|
+        // |    ---    | mtCtrl Z | mtSft X | C | V | B  |   |  N  |  M  |  ,  |  .  | mtCtrl Q |  ---  |
+        //                        | --- | mt_hold SFT ESC | mt GUI SPC |   | lt2 ENTER | lt1 BSPC | --- |
 
         base_layer {
             label = "BASE";
             bindings = <
-   &mt LALT TAB       &kp Q               &kp W  &kp E         &kp R           &kp T                             &kp Y         &kp U            &kp I      &kp O    &kp P      &kp BSPC
-   &kp LEFT_CONTROL   &kp A               &kp S  &kp D         &kp F           &kp G                             &kp H         &kp J            &kp K      &kp L    &kp SQT    &kp SEMI
-   &kp TAB            &mt LEFT_CONTROL Z  &kp X  &kp C         &kp V           &kp B                             &kp N         &kp M            &kp COMMA  &kp DOT  &kp FSLH   &kp ENTER
-                                                 &kp LEFT_GUI  &kp LEFT_SHIFT  &mt LA(LS(LEFT_CONTROL)) SPACE    &lt SYM ESCAPE  &lt NAV BACKSPACE  &trans
+        &lt FUN TAB                   &kp W             &kp E   &kp R                       &kp T                 &kp Y        &kp U            &kp I      &kp O           &lt FUN P
+        &mt LS(LA(LEFT_CONTROL)) A    &mt LEFT_ALT S    &kp D   &kp F                       &kp G                 &kp H        &kp J            &kp K      &mt LEFT_ALT L  &mt LS(LA(LEFT_CONTROL)) SINGLE_QUOTE
+&trans  &mt LEFT_CONTROL Z            &mt LEFT_SHIFT X  &kp C   &kp V                       &kp B                 &kp N        &kp M            &kp COMMA  &kp DOT         &mt LEFT_CONTROL Q                     &trans
+                                                        &trans  &mt_hold LEFT_SHIFT ESCAPE  &mt LEFT_GUI SPACE    &lt NAV ENTER  &lt SYM BACKSPACE  &trans
             >;
         };
 
         // -----------------------------------------------------------------------------------------
-        // NAV layer (Layer 1) - Navigation & symbols
-        // -----------------------------------------------------------------------------------------
-
-        nav_layer {
-            label = "NAV";
-            bindings = <
-   &trans  &kp AT           &kp LESS_THAN  &kp GREATER_THAN  &kp EQUAL          &kp LBRC         &kp CARET  &kp LEFT_BRACE        &kp RIGHT_BRACE        &kp DOLLAR  &trans   &trans
-   &trans  &kp EXCLAMATION  &kp UNDER      &kp MINUS         &kp EQUAL          &kp AMPS         &kp HASH   &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS  &kp TILDE   &trans   &trans
-   &trans  &kp STAR         &kp PLUS       &kp LEFT_BRACKET  &kp RIGHT_BRACKET  &kp PERCENT      &kp GRAVE  &kp COLON             &kp SEMI               &trans      &trans   &trans
-                                           &trans            &trans             &trans           &mo ADJ    &kp KP_N0             &trans
-            >;
-        };
-
-        // -----------------------------------------------------------------------------------------
-        // SYM layer (Layer 2) - Numbers & arrows
+        // SYM layer (Layer 1)
         // -----------------------------------------------------------------------------------------
 
         sym_layer {
             label = "SYM";
             bindings = <
-   &trans  &kp NUMBER_1  &kp NUMBER_2  &kp NUMBER_3  &kp NUMBER_4  &kp NUMBER_5    &kp NUMBER_6    &kp NUMBER_7    &kp NUMBER_8  &kp NUMBER_9     &kp NUMBER_0  &trans
-   &trans  &trans        &trans        &trans        &trans        &trans          &kp LEFT_ARROW  &kp DOWN_ARROW  &kp UP_ARROW  &kp RIGHT_ARROW  &trans        &trans
-   &trans  &trans        &trans        &trans        &trans        &trans          &trans          &trans          &trans        &trans           &trans        &kp BACKSPACE
-                                       &trans        &gif          &mo ADJ         &trans          &kp C_PP        &trans
+        &kp AT           &kp LESS_THAN  &kp GREATER_THAN  &kp BACKSLASH             &kp PIPE       &kp GRAVE  &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS  &kp TILDE   &kp BACKSPACE
+        &kp EXCLAMATION  &kp UNDER      &kp MINUS         &kp EQUAL                 &kp AMPS       &kp HASH   &kp LEFT_BRACE        &kp RIGHT_BRACE        &kp SLASH   &kp QUESTION
+&trans  &kp STAR         &kp PLUS       &kp LEFT_BRACKET  &kp RIGHT_BRACKET         &kp PERCENT    &kp CARET  &kp COLON             &kp SEMI               &kp DOLLAR  &kp INT_YEN    &trans
+                                        &trans            &mt LEFT_SHIFT BACKSPACE  &trans         &mo SYS    &kp KP_N0             &trans
             >;
         };
 
         // -----------------------------------------------------------------------------------------
-        // ADJ layer (Layer 3) - System / Bluetooth / F-keys
+        // NAV layer (Layer 2)
         // -----------------------------------------------------------------------------------------
 
-        adjust_layer {
-            label = "ADJ";
+        nav_layer {
+            label = "NAV";
             bindings = <
-   &trans  &sys_reset   &bt BT_CLR  &out OUT_TOG  &trans  &trans    &trans  &kp F7  &kp F8  &kp F9  &kp F12  &trans
-   &trans  &bootloader  &bt BT_NXT  &trans        &trans  &trans    &trans  &kp F4  &kp F5  &kp F6  &kp F11  &trans
-   &trans  &trans       &bt BT_PRV  &trans        &trans  &trans    &trans  &kp F1  &kp F2  &kp F3  &kp F10  &trans
-                                    &trans        &trans  &trans    &trans  &trans  &trans
+        &kp NUMBER_1      &kp NUMBER_2       &kp NUMBER_3              &kp NUMBER_4              &kp NUMBER_5          &kp NUMBER_6    &kp NUMBER_7    &kp NUMBER_8  &kp NUMBER_9     &kp NUMBER_0
+        &trans            &mt LEFT_ALT HOME  &mt LEFT_SHIFT PAGE_DOWN  &kp PAGE_UP               &kp END               &kp LEFT_ARROW  &kp DOWN_ARROW  &kp UP_ARROW  &kp RIGHT_ARROW  &kp BACKSPACE
+&trans  &kp LEFT_CONTROL  &trans             &trans                    &trans                    &trans                &msc SCRL_LEFT  &msc SCRL_DOWN  &msc SCRL_UP  &msc SCRL_RIGHT  &kp MINUS      &trans
+                                             &trans                    &mt LEFT_SHIFT BACKSPACE  &mt LEFT_GUI SPACE    &trans          &trans          &trans
             >;
         };
 
         // -----------------------------------------------------------------------------------------
-        // TVP1 layer (Layer 4) - TVP app controls
+        // FUN layer (Layer 3)
         // -----------------------------------------------------------------------------------------
 
-        tvp1_layer {
-            label = "TVP 1";
+        fun_layer {
             bindings = <
-   &trans  &kp TAB     &kp I      &kp LC(LALT)  &kp O        &kp LC(F20)    &none  &none  &none  &none  &none  &none
-   &trans  &lt TVP2 L  &kp LEFT   &kp LALT      &kp RIGHT    &kp SPACE      &none  &none  &none  &none  &none  &none
-   &kp J   &kp LSHFT   &kp LC(C)  &kp BSPC      &kp LC(V)    &kp LC(F19)    &none  &none  &none  &none  &none  &none
-                                   &trans        &kp LC(F14)  &kp LC(F13)    &none  &none  &none
+        &LockScreen  &CloseWindow    &mmv MOVE_UP    &ScreenShoot     &ReviveWindow    &trans  &trans             &trans           &trans  &kp K_PLAY_PAUSE
+        &trans       &mmv MOVE_LEFT  &mmv MOVE_DOWN  &mmv MOVE_RIGHT  &QuitApp         &trans  &kp K_PREVIOUS     &kp K_NEXT       &trans  &trans
+&trans  &trans       &trans          &trans          &trans           &trans           &trans  &kp K_VOLUME_DOWN  &kp K_VOLUME_UP  &trans  &trans            &trans
+                                     &mkp MCLK       &mkp LCLK        &mkp RCLK        &trans  &trans             &trans
             >;
         };
 
         // -----------------------------------------------------------------------------------------
-        // TVP2 layer (Layer 5) - TVP app extended controls
+        // SYS layer (Layer 4)
         // -----------------------------------------------------------------------------------------
 
-        tvp2_layer {
-            label = "TVP 2";
+        sys_layer {
+            label = "SYS";
             bindings = <
-   &trans  &kp LC(F18)  &kp LS(I)     &kp LS(HOME)  &kp LS(O)      &kp LS(F)      &trans  &kp F7  &kp F8  &kp F9  &kp F12  &trans
-   &trans  &trans       &kp LS(LEFT)  &kp LC(F17)   &kp LS(RIGHT)  &kp RET        &trans  &kp F4  &kp F5  &kp F6  &kp F11  &trans
-   &trans  &kp J        &kp LS(C)     &kp LC(F16)   &kp LS(V)      &kp LC(F15)    &trans  &kp F1  &kp F2  &kp F3  &kp F10  &trans
-                                      &trans        &kp LC(F12)    &kp LC(F11)    &trans  &trans  &trans
+        &trans  &trans  &bt BT_CLR_ALL  &bt BT_CLR   &sys_reset      &sys_reset    &bt BT_CLR   &bt BT_CLR_ALL  &bt BT_SEL 0  &bt BT_SEL 1
+        &trans  &trans  &trans          &bootloader  &out OUT_USB    &out OUT_USB  &bootloader  &trans          &bt BT_SEL 2  &bt BT_SEL 3
+&trans  &trans  &trans  &trans          &trans       &out OUT_BLE    &out OUT_BLE  &trans       &trans          &trans        &trans        &trans
+                        &trans          &trans       &trans          &trans        &trans       &trans
             >;
         };
     };
