@@ -157,7 +157,7 @@
             bindings = <
 &trans  &lt FUN TAB                 &kp W             &kp E   &kp R                       &kp T                 &kp Y          &kp U              &kp I      &kp O           &lt FUN P                              &trans
 &trans  &mt LS(LA(LEFT_CONTROL)) A  &mt LEFT_ALT S    &kp D   &kp F                       &kp G                 &kp H          &kp J              &kp K      &mt LEFT_ALT L  &mt LS(LA(LEFT_CONTROL)) SINGLE_QUOTE  &trans
-&trans  &mt LEFT_CONTROL Z          &mt LEFT_SHIFT X  &kp C   &kp V                       &kp B                 &kp N          &kp M              &kp COMMA  &kp DOT         &mt LEFT_CONTROL Q                     &trans
+&trans  &mt LEFT_CONTROL Z          &mt LEFT_SHIFT X  &kp C   &kp V                       &kp B                 &kp N          &kp M              &kp COMMA  &lt 4 DOT       &mt LEFT_CONTROL Q                     &trans
                                                       &trans  &mt_hold LEFT_SHIFT ESCAPE  &mt LEFT_GUI SPACE    &lt NAV ENTER  &lt SYM BACKSPACE  &trans
             >;
         };
@@ -214,10 +214,10 @@
         sys_layer {
             label = "SYS";
             bindings = <
-&trans  &trans  &trans  &bt BT_CLR_ALL  &bt BT_CLR   &sys_reset      &sys_reset    &bt BT_CLR   &bt BT_CLR_ALL  &bt BT_SEL 0  &bt BT_SEL 1  &trans
-&trans  &trans  &trans  &trans          &bootloader  &out OUT_USB    &out OUT_USB  &bootloader  &trans          &bt BT_SEL 2  &bt BT_SEL 3  &trans
-&trans  &trans  &trans  &trans          &trans       &out OUT_BLE    &out OUT_BLE  &trans       &trans          &trans        &trans        &trans
-                        &trans          &trans       &trans          &trans        &trans       &trans
+&trans  &bt BT_SEL 1  &bt BT_SEL 0  &bt BT_CLR_ALL  &bt BT_CLR   &sys_reset      &sys_reset    &bt BT_CLR   &bt BT_CLR_ALL  &bt BT_SEL 0  &bt BT_SEL 1  &trans
+&trans  &bt BT_SEL 4  &bt BT_SEL 3  &trans          &bootloader  &out OUT_USB    &out OUT_USB  &bootloader  &trans          &bt BT_SEL 2  &bt BT_SEL 3  &trans
+&trans  &trans        &trans        &trans          &trans       &out OUT_BLE    &out OUT_BLE  &trans       &trans          &trans        &trans        &trans
+                                    &trans          &trans       &trans          &trans        &trans       &trans
             >;
         };
     };
