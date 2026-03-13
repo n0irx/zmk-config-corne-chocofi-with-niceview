@@ -214,10 +214,10 @@
         sys_layer {
             label = "SYS";
             bindings = <
-&trans  &bt BT_SEL 1  &bt BT_SEL 0  &bt BT_CLR_ALL  &bt BT_CLR   &sys_reset      &sys_reset    &bt BT_CLR   &bt BT_CLR_ALL  &bt BT_SEL 0  &bt BT_SEL 1  &trans
-&trans  &bt BT_SEL 4  &bt BT_SEL 3  &trans          &bootloader  &out OUT_USB    &out OUT_USB  &bootloader  &trans          &bt BT_SEL 2  &bt BT_SEL 3  &trans
-&trans  &trans        &trans        &trans          &trans       &out OUT_BLE    &out OUT_BLE  &trans       &trans          &trans        &trans        &trans
-                                    &trans          &trans       &trans          &trans        &trans       &trans
+&trans  &bt BT_SEL 1  &bt BT_SEL 0  &bt BT_CLR_ALL  &bt BT_CLR    &sys_reset      &sys_reset    &bt BT_CLR    &bt BT_CLR_ALL  &bt BT_SEL 0  &bt BT_SEL 1  &trans
+&trans  &bt BT_SEL 4  &bt BT_SEL 3  &trans          &bootloader   &out OUT_USB    &out OUT_USB  &bootloader   &trans          &bt BT_SEL 2  &bt BT_SEL 3  &trans
+&trans  &trans        &trans        &trans          &kp NUMBER_4  &out OUT_BLE    &out OUT_BLE  &kp NUMBER_4  &trans          &trans        &trans        &trans
+                                    &trans          &trans        &trans          &trans        &trans        &trans
             >;
         };
     };
